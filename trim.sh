@@ -6,4 +6,4 @@
 
 #echo "$1"
 
-ffmpeg -i feeny.wav -ss $1 -to $2  -c copy "./data/feeny_$3.wav"
+ffmpeg -i feeny.wav -ss $1 -to $2  -c copy "./data/generated/feeny_$3.wav"
