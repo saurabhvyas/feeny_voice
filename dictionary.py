@@ -1,27 +1,22 @@
 #!/usr/bin/env python
 
-# usage python dictionary.py <path of .srt>
-# create plain text from input srt file (at same location with .txt appended ), then from plain text create dictionary.txt at same folder
+# usage python dictionary.py 
+# create plain text from concatenating dataset .txt files, then from plain text create dictionary.txt at same folder
+
+
+# usage : python dictionary.py <path to folder containing .txt files>
 
 from sys import argv
+from pathlib import Path
 
-state = -1
-text_lines = []
-with open(argv[1],"r") as f:
-	for line in f.readlines():
-		if (line=="\n"):
-			state = -1
-			continue
-		elif state==1:
-			text_lines.append(line.strip())
-		else:
-			state += 1
+import subprocess
+from subprocess import Popen,PIPE
 
+subprocess.check_output(['./concat.sh',str(argv[1])]) 
 
-with open(  argv[1] + '.txt' , 'w') as f:
-	f.write(" ".join(text_lines))
+saved_txt_path=str(Path(argv[1]).parents[0])
 
-with open(argv[1] + '.txt', 'r') as myfile:
+with open(saved_txt_path + '/concatenated.txt', 'r') as myfile:
     data=myfile.read()
 
 words = data.split()
@@ -33,6 +28,6 @@ words=list(set(words))
 print(len(words))
 
 
-with open (argv[1] + '.txt' + 'words.txt', 'w') as fo:
+with open (saved_txt_path + '/words.txt', 'w') as fo:
    for word in words:
      fo.write(str(word) + '\n')
